@@ -157,6 +157,7 @@ module.exports = grammar({
     keyword_except: _ => make_keyword("except"),
     keyword_intersect: _ => make_keyword("intersect"),
     keyword_returning: _ => make_keyword("returning"),
+    keyword_enum: _ => make_keyword("enum"),
 
     _temporary: $ => choice($.keyword_temp, $.keyword_temporary),
     _not_null: $ => seq($.keyword_not, $.keyword_null),
@@ -172,41 +173,41 @@ module.exports = grammar({
     keyword_true: _ => make_keyword("true"),
     keyword_false: _ => make_keyword("false"),
 
-    keyword_boolean: _ => make_keyword("boolean"),
+    _keyword_boolean: _ => make_keyword("boolean"),
 
-    keyword_smallserial: _ => make_keyword("smallserial"),
-    keyword_serial: _ => make_keyword("serial"),
-    keyword_bigserial: _ => make_keyword("bigserial"),
-    keyword_smallint: _ => make_keyword("smallint"),
-    keyword_int: _ => choice(make_keyword("int"), make_keyword("integer")),
-    keyword_bigint: _ => make_keyword("bigint"),
-    keyword_decimal: _ => make_keyword("decimal"),
-    keyword_numeric: _ => make_keyword("numeric"),
-    keyword_real: _ => make_keyword("real"),
-    double: _ => seq(make_keyword("double"), make_keyword("precision")),
+    _keyword_smallserial: _ => make_keyword("smallserial"),
+    _keyword_serial: _ => make_keyword("serial"),
+    _keyword_bigserial: _ => make_keyword("bigserial"),
+    _keyword_smallint: _ => make_keyword("smallint"),
+    _keyword_int: _ => choice(make_keyword("int"), make_keyword("integer")),
+    _keyword_bigint: _ => make_keyword("bigint"),
+    _keyword_decimal: _ => make_keyword("decimal"),
+    _keyword_numeric: _ => make_keyword("numeric"),
+    _keyword_real: _ => make_keyword("real"),
+    _double: _ => seq(make_keyword("double"), make_keyword("precision")),
 
-    keyword_money: _ => make_keyword("money"),
+    _keyword_money: _ => make_keyword("money"),
 
-    keyword_char: _ => choice(make_keyword("char"), make_keyword("character")),
-    keyword_varchar: _ => choice(
+    _keyword_char: _ => choice(make_keyword("char"), make_keyword("character")),
+    _keyword_varchar: _ => choice(
       make_keyword("varchar"),
       seq(
         make_keyword("character"),
         make_keyword("varying"),
       )
     ),
-    keyword_text: _ => make_keyword("text"),
-    keyword_uuid: _ => make_keyword("uuid"),
+    _keyword_text: _ => make_keyword("text"),
+    _keyword_uuid: _ => make_keyword("uuid"),
 
-    keyword_json: _ => make_keyword("json"),
-    keyword_jsonb: _ => make_keyword("jsonb"),
-    keyword_xml: _ => make_keyword("xml"),
+    _keyword_json: _ => make_keyword("json"),
+    _keyword_jsonb: _ => make_keyword("jsonb"),
+    _keyword_xml: _ => make_keyword("xml"),
 
-    keyword_bytea: _ => make_keyword("bytea"),
+    _keyword_bytea: _ => make_keyword("bytea"),
 
-    keyword_date: _ => make_keyword("date"),
-    keyword_datetime: _ => make_keyword("datetime"),
-    keyword_timestamp: _ => seq(
+    _keyword_date: _ => make_keyword("date"),
+    _keyword_datetime: _ => make_keyword("datetime"),
+    _keyword_timestamp: _ => seq(
       make_keyword("timestamp"),
       optional(
         seq(
@@ -216,7 +217,7 @@ module.exports = grammar({
         )
       ),
     ),
-    keyword_timestamptz: _ => choice(
+    _keyword_timestamptz: _ => choice(
       make_keyword('timestamptz'),
       seq(
         make_keyword("timestamp"),
@@ -226,68 +227,73 @@ module.exports = grammar({
       ),
     ),
 
-    keyword_geometry: _ => make_keyword("geometry"),
-    keyword_geography: _ => make_keyword("geography"),
-    keyword_box2d: _ => make_keyword("box2d"),
-    keyword_box3d: _ => make_keyword("box3d"),
+    _keyword_geometry: _ => make_keyword("geometry"),
+    _keyword_geography: _ => make_keyword("geography"),
+    _keyword_box2d: _ => make_keyword("box2d"),
+    _keyword_box3d: _ => make_keyword("box3d"),
 
-    _type: $ => choice(
-      $.keyword_boolean,
-
-      $.keyword_smallserial,
-      $.keyword_serial,
-      $.keyword_bigserial,
-      $.keyword_smallint,
-      $.keyword_int,
-
-      $.bigint,
-      $.decimal,
-      $.numeric,
-      $.keyword_real,
-      $.double,
-
-      $.keyword_money,
-
-      $.char,
-      $.varchar,
-      $.keyword_text,
-
-      $.keyword_uuid,
-
-      $.keyword_json,
-      $.keyword_jsonb,
-      $.keyword_xml,
-
-      $.keyword_bytea,
-
-      $.keyword_date,
-      $.keyword_datetime,
-      $.keyword_timestamp,
-      $.keyword_timestamptz,
-
-      $.keyword_geometry,
-      $.keyword_geography,
-      $.keyword_box2d,
-      $.keyword_box3d,
-
-      $.bigint,
-      $.char,
-      $.varchar,
-      $.decimal,
-      $.numeric,
+    type: $ => choice(
+      alias($._builtin_type, $.builtin),
+      alias($._identifier, $.custom),
     ),
 
-    bigint: $ => parametric_type($, $.keyword_bigint),
-    decimal: $ => choice(
-      parametric_type($, $.keyword_decimal, ['precision']),
-      parametric_type($, $.keyword_decimal, ['precision', 'scale']),
+    _builtin_type: $ => choice(
+      $._keyword_boolean,
+
+      $._keyword_smallserial,
+      $._keyword_serial,
+      $._keyword_bigserial,
+      $._keyword_smallint,
+      $._keyword_int,
+
+      $._bigint,
+      $._decimal,
+      $._numeric,
+      $._keyword_real,
+      $._double,
+
+      $._keyword_money,
+
+      $._char,
+      $._varchar,
+      $._keyword_text,
+
+      $._keyword_uuid,
+
+      $._keyword_json,
+      $._keyword_jsonb,
+      $._keyword_xml,
+
+      $._keyword_bytea,
+
+      $._keyword_date,
+      $._keyword_datetime,
+      $._keyword_timestamp,
+      $._keyword_timestamptz,
+
+      $._keyword_geometry,
+      $._keyword_geography,
+      $._keyword_box2d,
+      $._keyword_box3d,
+
+      $._bigint,
+      $._char,
+      $._varchar,
+      $._decimal,
+      $._numeric,
     ),
-    numeric: $ => choice(
-      parametric_type($, $.keyword_numeric, ['precision']),
-      parametric_type($, $.keyword_numeric, ['precision', 'scale']),
+
+    _bigint: $ => parametric_type($, $._keyword_bigint),
+    _decimal: $ => choice(
+      parametric_type($, $._keyword_decimal, ['precision']),
+      parametric_type($, $._keyword_decimal, ['precision', 'scale']),
     ),
-    char: $ => parametric_type($, $.keyword_char),
-    varchar: $ => parametric_type($, $.keyword_varchar),
+    _numeric: $ => choice(
+      parametric_type($, $._keyword_numeric, ['precision']),
+      parametric_type($, $._keyword_numeric, ['precision', 'scale']),
+    ),
+    _char: $ => parametric_type($, $._keyword_char),
+    _varchar: $ => parametric_type($, $._keyword_varchar),
 
     comment: _ => /--.*\n/,
     marginalia: _ => /\/'*.*\*\//,
@@ -395,6 +401,7 @@ module.exports = grammar({
         $.create_view,
         $.create_materialized_view,
         $.create_function,
+        $.create_type,
         // TODO type, sequence
       ),
     ),
@@ -475,7 +482,7 @@ module.exports = grammar({
 
     function_arg_defintion: $ => seq(
       optional(field('name', $.identifier)),
-      field('type', $._type),
+      $.type,
       optional(seq(
         choice("=", $.keyword_default),
         $._expression,
@@ -485,7 +492,7 @@ module.exports = grammar({
     function_returns: $ => seq(
       $.keyword_returns,
       choice(
-        field('type', $._type),
+        $.type,
         $._function_returns_table,
       )
     ),
@@ -535,7 +542,7 @@ module.exports = grammar({
       optional(seq(
         $.keyword_for,
         $.keyword_type,
-        $._type,
+        $.type,
       )),
     ),
 
@@ -692,6 +699,20 @@ module.exports = grammar({
     _dollar_sign_function_definition: $ =>
       seq("$$", alias(/[^$$]*/, $.raw_function_definition), "$$"),
 
+    create_type: $ => seq(
+      $.keyword_create,
+      $.keyword_type,
+      $.identifier,
+      $.keyword_as,
+      choice(
+        $._enum_type,
+      )
+    ),
+    
+    _enum_type: $ => seq(
+      $.keyword_enum,
+    ),
+
     _alter_statement: $ => seq(
       choice(
         $.alter_table,
@@ -759,7 +780,7 @@ module.exports = grammar({
             ),
           ),
           $.keyword_type,
-          field('type', $._type),
+          $.type,
         ),
         seq(
           $.keyword_set,
@@ -956,7 +977,7 @@ module.exports = grammar({
 
     column_definition: $ => seq(
       field('name', $.identifier),
-      field('type', $._type),
+      $.type,
       choice(
         optional($._not_null),
         optional($._default_null),

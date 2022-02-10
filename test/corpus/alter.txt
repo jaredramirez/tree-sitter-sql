@@ -16,9 +16,7 @@ ALTER TABLE my_table
    (add_column (keyword_add) (keyword_column)
     (column_definition
      name: (identifier)
-     type: (varchar
-      (keyword_varchar)
-      size: (number))
+     (type (builtin size: (number)))
      (keyword_not)
      (keyword_null))
    ))))
@@ -90,7 +88,7 @@ ALTER TABLE my_table
     (keyword_column)
     name: (identifier)
     (keyword_type)
-    type: (varchar (keyword_varchar) size: (number)))
+    (type (builtin size: (number))))
   )))
 
 ==================
@@ -248,7 +246,7 @@ ALTER TABLE IF EXISTS my_table
     (keyword_if)
     (keyword_not)
     (keyword_exists)
-    (column_definition name: (identifier) type: (keyword_date)))
+    (column_definition name: (identifier) (type (builtin))))
    (alter_column
     (keyword_alter)
     (keyword_column)
