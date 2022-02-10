@@ -18,7 +18,7 @@ ALTER TABLE my_table
      name: (identifier)
      type: (varchar
       (keyword_varchar)
-      size: (literal))
+      size: (number))
      (keyword_not)
      (keyword_null))
    ))))
@@ -44,7 +44,7 @@ ALTER TABLE my_table
     name: (identifier)
     (keyword_set)
     (keyword_default)
-    (literal)
+    (string (string_fragment))
   ))))
 
 ==================
@@ -90,7 +90,7 @@ ALTER TABLE my_table
     (keyword_column)
     name: (identifier)
     (keyword_type)
-    type: (varchar (keyword_varchar) size: (literal)))
+    type: (varchar (keyword_varchar) size: (number)))
   )))
 
 ==================

@@ -20,7 +20,7 @@ SET for = foo + 1;
       right:
        (predicate
         left: (field name: (identifier))
-        right: (literal))))))))
+        right: (number))))))))
 
 ==================
 update with multiple assignments
@@ -44,7 +44,7 @@ SET for = foo + 1, col2 = col1;
       right:
        (predicate
         left: (field name: (identifier))
-        right: (literal)))
+        right: (number)))
      (predicate
       left: (field name: (identifier))
       right: (field name: (identifier))))))))

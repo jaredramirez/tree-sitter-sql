@@ -33,4 +33,4 @@ WHERE id < (
        (from
         (keyword_from)
         (table_expression (identifier))
-        (limit (keyword_limit) (literal))))))))))
+        (limit (keyword_limit) (number))))))))))

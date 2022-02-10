@@ -65,7 +65,7 @@ FROM second;
       (column name: (identifier))
       (column name: (identifier)))
      (keyword_values)
-     (list (literal) (literal))))
+     (list (number) (number))))
    (returning
     (keyword_returning)
     (all_fields))))

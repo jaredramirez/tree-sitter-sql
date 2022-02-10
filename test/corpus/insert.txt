@@ -16,9 +16,9 @@ VALUES('foo','bar', 3);
     (table_reference name: (identifier))
     (keyword_values)
     (list
-     (literal)
-     (literal)
-     (literal))))))
+     (string (string_fragment))
+     (string (string_fragment))
+     (number))))))
 
 ==================
 Simple insert with column ordering
@@ -42,9 +42,9 @@ VALUES ('foo', 123, '2020');
      (column name: (identifier)))
     (keyword_values)
     (list
-     (literal)
-     (literal)
-     (literal))))))
+     (string (string_fragment))
+     (number)
+     (string (string_fragment)))))))
 
 ==================
 Insert-select
@@ -94,9 +94,9 @@ RETURNING *;
     (table_reference name: (identifier))
     (keyword_values)
     (list
-     (literal)
-     (literal)
-     (literal))))
+     (string (string_fragment))
+     (string (string_fragment))
+     (number))))
   (returning
    (keyword_returning)
    (all_fields))))
@@ -120,9 +120,9 @@ RETURNING id;
     (table_reference name: (identifier))
     (keyword_values)
     (list
-     (literal)
-     (literal)
-     (literal))))
+     (string (string_fragment))
+     (string (string_fragment))
+     (number))))
   (returning
    (keyword_returning)
    (field name: (identifier)))))
@@ -146,9 +146,9 @@ RETURNING id, val1, val2;
     (table_reference name: (identifier))
     (keyword_values)
     (list
-     (literal)
-     (literal)
-     (literal))))
+     (string (string_fragment))
+     (string (string_fragment))
+     (number))))
   (returning
    (keyword_returning)
    (field name: (identifier))

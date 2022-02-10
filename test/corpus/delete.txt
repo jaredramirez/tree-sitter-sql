@@ -34,7 +34,7 @@ LIMIT 4;
     name: (identifier))
    (limit 
     (keyword_limit)
-    (literal)))))
+    (number)))))
 
 ==================
 Delete table with order by
@@ -62,7 +62,7 @@ LIMIT 4;
         (keyword_desc))))
    (limit 
     (keyword_limit)
-    (literal)))))
+    (number)))))
 
 ==================
 Delete table with where
@@ -86,4 +86,4 @@ WHERE id = 9;
     (where_expression
      (predicate
       left: (field name: (identifier))
-      right: (literal)))))))
+      right: (number)))))))

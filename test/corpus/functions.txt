@@ -1,0 +1,320 @@
+==================
+Create sql function returning value
+==================
+
+CREATE FUNCTION test(X INT) RETURNS INT RETURN 1;
+
+---
+
+(program
+  (statement
+    (create_function
+      (keyword_create)
+      (keyword_function)
+      (function_reference
+        (identifier))
+      (function_arg_definitions
+        (function_arg_defintion
+          (identifier)
+          (keyword_int)))      
+      (function_returns
+        (keyword_returns)
+        (keyword_int))
+      (function_attributes
+        (function_body
+          (keyword_return)
+          (number))))))
+
+==================
+Create sql function returning table
+==================
+
+CREATE FUNCTION test(X INT) RETURNS TABLE(a int, b text) RETURN 1;
+
+---
+
+(program
+  (statement
+    (create_function
+      (keyword_create)
+      (keyword_function)
+      (function_reference
+        (identifier))
+      (function_arg_definitions
+        (function_arg_defintion
+          (identifier)
+          (keyword_int)))
+      (function_returns
+        (keyword_returns)
+        (keyword_table)
+        (column_definitions
+          (column_definition
+            (identifier)
+            (keyword_int))
+          (column_definition
+            (identifier)
+            (keyword_text))))
+      (function_attributes
+        (function_body
+          (keyword_return)
+          (number))))))
+
+==================
+Create sql function default params
+==================
+
+CREATE FUNCTION test(X INT, Y INT = 10, Z TEXT DEFAULT 'hi') RETURNS INT RETURN 1;
+
+---
+
+(program
+  (statement
+    (create_function
+      (keyword_create)
+      (keyword_function)
+      (function_reference
+        (identifier))
+      (function_arg_definitions
+        (function_arg_defintion
+          (identifier)
+          (keyword_int))
+        (function_arg_defintion
+          (identifier)
+          (keyword_int)
+          (number))
+        (function_arg_defintion
+          (identifier)
+          (keyword_text)
+          (keyword_default)
+          (string (string_fragment))))      
+      (function_returns
+        (keyword_returns)
+        (keyword_int))
+      (function_attributes
+        (function_body
+          (keyword_return)
+          (number))))))
+
+==================
+Create sql function returning block (postgres)
+==================
+
+
+CREATE FUNCTION test(X INT) RETURNS INT
+BEGIN
+    SELECT x + 1;
+END;
+
+---
+
+(program
+  (statement
+    (create_function
+      (keyword_create)
+      (keyword_function)
+      (function_reference
+        (identifier))
+      (function_arg_definitions
+        (function_arg_defintion
+          (identifier)
+          (keyword_int)))
+      (function_returns
+        (keyword_returns)
+        (keyword_int))
+      (function_attributes
+        (function_body
+          (function_block
+            (keyword_begin)
+            (statement
+              (select
+                (keyword_select)
+                (select_expression
+                  (predicate
+                    (field
+                      (identifier))
+                    (number)))))
+            (keyword_end)))))))
+
+==================
+Create sql function returning link to c function (postgres)
+==================
+
+
+CREATE FUNCTION test(X INT) RETURNS INT AS 'objfile', 'link_symbol';
+
+---
+
+(program
+  (statement
+    (create_function
+      (keyword_create)
+      (keyword_function)
+      (function_reference
+        (identifier))
+      (function_arg_definitions
+        (function_arg_defintion
+          (identifier)
+          (keyword_int)))
+      (function_returns
+        (keyword_returns)
+        (keyword_int))
+      (function_attributes
+        (function_definition
+          (keyword_as)
+          (obj_file (string_fragment))
+          (link_symbol (string_fragment)))))))
+
+==================
+Create sql function with $$ attributes (postgres)
+==================
+
+CREATE FUNCTION test(X INT) RETURNS INT AS $$
+    SELECT 1;
+$$
+    LANGUAGE PLPGSQL 
+    TRANSFORM FOR TYPE text, TRANSFORM FOR TYPE int
+    WINDOW
+    IMMUTABLE
+    NOT LEAKPROOF
+    RETURNS NULL ON NULL INPUT
+    EXTERNAL SECURITY INVOKER
+    SECURITY DEFINER
+    PARALLEL RESTRICTED
+    COST 100
+    ROWS 1
+    SUPPORT schema.func
+    SET test
+    SET test TO 10
+    SET test = 10
+    SET test FROM CURRENT
+;
+
+---
+
+(program
+  (statement
+    (create_function
+      (keyword_create)
+      (keyword_function)
+      (function_reference
+        (identifier))
+      (function_arg_definitions
+        (function_arg_defintion
+          (identifier)
+          (keyword_int)))
+      (function_returns
+        (keyword_returns)
+        (keyword_int))
+      (function_attributes
+        (function_definition
+          (keyword_as)
+          (raw_function_definition))
+        (function_language
+          (keyword_language)
+          (identifier))
+        (function_transfrom
+          (keyword_transform)
+          (keyword_for)
+          (keyword_type)
+          (keyword_text))
+        (function_transfrom
+          (keyword_transform)
+          (keyword_for)
+          (keyword_type)
+          (keyword_int))
+        (function_window
+          (keyword_window))
+        (function_behavior
+          (keyword_immutable))
+        (function_leakproof
+          (keyword_not)
+          (keyword_leakproof))
+        (function_null_inputs
+          (keyword_returns)
+          (keyword_null)
+          (keyword_on)
+          (keyword_null)
+          (keyword_input))
+        (function_security
+          (keyword_external)
+          (keyword_security)
+          (keyword_invoker))
+        (function_security
+          (keyword_security)
+          (keyword_definer))
+        (function_parallel
+          (keyword_parallel)
+          (keyword_restricted))
+        (function_cost
+          (keyword_cost)
+          (number))
+        (function_rows
+          (keyword_rows)
+          (number))
+        (function_support
+          (keyword_support)
+          (identifier)
+          (identifier))
+        (function_set
+          (keyword_set)
+          (identifier))
+        (function_set
+          (keyword_set)
+          (identifier)
+          (keyword_to)
+          (number))
+        (function_set
+          (keyword_set)
+          (identifier)
+          (number))
+        (function_set
+          (keyword_set)
+          (identifier)
+          (keyword_from)
+          (keyword_current))))))
+
+==================
+Create sql function with $$ attributes (mysql)
+==================
+
+CREATE FUNCTION test(X INT) RETURNS INT AS $$
+    SELECT 1;
+$$ LANGUAGE SQL COMMENT 'c' NOT DETERMINISTIC READS SQL DATA SQL SECURITY DEFINER;
+
+---
+
+(program
+  (statement
+    (create_function
+      (keyword_create)
+      (keyword_function)
+      (function_reference
+        (identifier))
+        (function_arg_definitions
+            (function_arg_defintion
+                (identifier)
+                (keyword_int)))
+      (function_returns
+        (keyword_returns)
+        (keyword_int))
+      (function_attributes
+        (function_definition
+          (keyword_as)
+          (raw_function_definition))
+        (function_language
+          (keyword_language)
+          (identifier))
+        (function_comment
+          (keyword_comment)
+          (string (string_fragment)))
+        (function_deterministic
+          (keyword_not)
+          (keyword_deterministic))
+        (function_behavior
+          (keyword_reads)
+          (keyword_sql)
+          (keyword_data))
+        (function_security
+          (keyword_sql)
+          (keyword_security)
+          (keyword_definer))))))

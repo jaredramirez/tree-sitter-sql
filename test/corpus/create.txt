@@ -106,7 +106,7 @@ CREATE TABLE my_table (
      type:
      (char
       (keyword_char)
-      size: (literal))
+      size: (number))
      (keyword_not)
      (keyword_null))
     (column_definition
@@ -153,7 +153,7 @@ CREATE TABLE my_table (
      type:
      (char
       (keyword_char)
-      size: (literal))
+      size: (number))
      (keyword_not)
      (keyword_null))
     (column_definition
@@ -197,7 +197,7 @@ CREATE TABLE IF NOT EXISTS `addresses` (
       type:
        (bigint
         (keyword_bigint)
-        size: (literal))
+        size: (number))
       (keyword_not)
       (keyword_null)
       (keyword_auto_increment))))))
@@ -230,7 +230,7 @@ CREATE TABLE IF NOT EXISTS `addresses` (
       type:
        (bigint
         (keyword_bigint)
-        size: (literal))
+        size: (number))
       (keyword_not)
       (keyword_null)
       (keyword_auto_increment))
@@ -281,7 +281,7 @@ CREATE TABLE IF NOT EXISTS `addresses` (
       type:
        (bigint
         (keyword_bigint)
-        size: (literal))
+        size: (number))
       (keyword_not)
       (keyword_null)
       (keyword_auto_increment))
@@ -290,7 +290,7 @@ CREATE TABLE IF NOT EXISTS `addresses` (
       type:
        (bigint
         (keyword_bigint)
-        size: (literal))
+        size: (number))
       (keyword_default)
       (keyword_null))
     (column_definition
@@ -298,7 +298,7 @@ CREATE TABLE IF NOT EXISTS `addresses` (
       type:
        (varchar
         (keyword_varchar)
-        size: (literal))
+        size: (number))
       (keyword_default)
       (keyword_null))
     (column_definition
@@ -362,7 +362,7 @@ CREATE TABLE IF NOT EXISTS `addresses` (
       type:
        (bigint
         (keyword_bigint)
-        size: (literal))
+        size: (number))
       (keyword_not)
       (keyword_null)
       (keyword_auto_increment))
@@ -371,7 +371,7 @@ CREATE TABLE IF NOT EXISTS `addresses` (
       type:
        (bigint
         (keyword_bigint)
-        size: (literal))
+        size: (number))
       (keyword_default)
       (keyword_null))
     (column_definition
@@ -379,7 +379,7 @@ CREATE TABLE IF NOT EXISTS `addresses` (
       type:
        (varchar
         (keyword_varchar)
-        size: (literal))
+        size: (number))
       (keyword_default)
       (keyword_null))))))
 
@@ -407,7 +407,7 @@ CREATE TABLE my_table (
       type:
        (bigint
         (keyword_bigint)
-        size: (literal))
+        size: (number))
       (keyword_not)
       (keyword_null))
     (column_definition
@@ -569,19 +569,19 @@ CREATE TABLE type_test (
     (column_definition name: (identifier) type: (keyword_int))
     (column_definition name: (identifier) type: (bigint (keyword_bigint)))
     (column_definition name: (identifier) type: (decimal (keyword_decimal)))
-    (column_definition name: (identifier) type: (decimal (keyword_decimal) precision: (literal)))
-    (column_definition name: (identifier) type: (decimal (keyword_decimal) precision: (literal) scale: (literal)))
+    (column_definition name: (identifier) type: (decimal (keyword_decimal) precision: (number)))
+    (column_definition name: (identifier) type: (decimal (keyword_decimal) precision: (number) scale: (number)))
     (column_definition name: (identifier) type: (numeric (keyword_numeric)))
-    (column_definition name: (identifier) type: (numeric (keyword_numeric) precision: (literal)))
-    (column_definition name: (identifier) type: (numeric (keyword_numeric) precision: (literal) scale: (literal)))
+    (column_definition name: (identifier) type: (numeric (keyword_numeric) precision: (number)))
+    (column_definition name: (identifier) type: (numeric (keyword_numeric) precision: (number) scale: (number)))
     (column_definition name: (identifier) type: (keyword_real))
     (column_definition name: (identifier) type: (double))
     (column_definition name: (identifier) type: (keyword_money))
     (column_definition name: (identifier) type: (char (keyword_char)))
     (column_definition name: (identifier) type: (char (keyword_char)))
-    (column_definition name: (identifier) type: (char (keyword_char) size: (literal)))
-    (column_definition name: (identifier) type: (varchar (keyword_varchar) size: (literal)))
-    (column_definition name: (identifier) type: (varchar (keyword_varchar) size: (literal)))
+    (column_definition name: (identifier) type: (char (keyword_char) size: (number)))
+    (column_definition name: (identifier) type: (varchar (keyword_varchar) size: (number)))
+    (column_definition name: (identifier) type: (varchar (keyword_varchar) size: (number)))
     (column_definition name: (identifier) type: (keyword_text))
     (column_definition name: (identifier) type: (keyword_json))
     (column_definition name: (identifier) type: (keyword_jsonb))
