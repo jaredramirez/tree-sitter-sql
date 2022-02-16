@@ -158,10 +158,18 @@ module.exports = grammar({
     keyword_intersect: _ => make_keyword("intersect"),
     keyword_returning: _ => make_keyword("returning"),
     keyword_enum: _ => make_keyword("enum"),
+    keyword_collate: _ => make_keyword("collate"),
+    keyword_range: _ => make_keyword("range"),
+    keyword_subtype: _ => make_keyword("subtype"),
+    keyword_subtype_opclass: _ => make_keyword("subtype_opclass"),
+    keyword_subtype_diff: _ => make_keyword("subtype_diff"),
+    keyword_collation: _ => make_keyword("collation"),
+    keyword_canonical: _ => make_keyword("canonical"),
 
     _temporary: $ => choice($.keyword_temp, $.keyword_temporary),
     _not_null: $ => seq($.keyword_not, $.keyword_null),
-    _primary_key: $ => seq($.keyword_primary, $.keyword_key),
+    _primary_key: $ => seq($.keyword_primary,  $.keyword_key),
+    
     _if_exists: $ => seq($.keyword_if, $.keyword_exists),
     _if_not_exists: $ => seq($.keyword_if, $.keyword_not, $.keyword_exists),
     _or_replace: $ => seq($.keyword_or, $.keyword_replace),
@@ -170,8 +178,8 @@ module.exports = grammar({
 
     // Types
     keyword_null: _ => make_keyword("null"),
-    keyword_true: _ => make_keyword("true"),
-    keyword_false: _ => make_keyword("false"),
+    _keyword_true: _ => make_keyword("true"),
+    _keyword_false: _ => make_keyword("false"),
 
     _keyword_boolean: _ => make_keyword("boolean"),
 
@@ -402,7 +410,7 @@ module.exports = grammar({
         $.create_materialized_view,
         $.create_function,
         $.create_type,
-        // TODO type, sequence
+        // TODO sequence
       ),
     ),
 
@@ -682,22 +690,17 @@ module.exports = grammar({
 
     function_definition: $ => seq(
       $.keyword_as,
-      choice(
-        seq(
-          alias($.string, $.obj_file),
+      seq(
+        alias($._function_definition, $.string),
+        optional(seq(
           ",",
-          alias($.string, $.link_symbol),
-        ),
-        $._string_function_definition,
-        $._dollar_sign_function_definition,
-      )
+          $.string,
+        ))
+      ),
     ),
 
-    _string_function_definition: $ =>
+    _function_definition: $ =>
       alias($.string, $.raw_function_definition),
-
-    _dollar_sign_function_definition: $ =>
-      seq("$$", alias(/[^$$]*/, $.raw_function_definition), "$$"),
 
     create_type: $ => seq(
       $.keyword_create,
@@ -705,12 +708,98 @@ module.exports = grammar({
       $.identifier,
       $.keyword_as,
       choice(
+        $.custom_fields,
         $._enum_type,
+        $._range_type,
+        // TODO: Postgres create type input/output
       )
     ),
     
+    custom_fields: $ => seq(
+      '(',
+      optional(
+        $._custom_fields,
+      ),
+      ')',
+    ),
+
+    _custom_fields: $ => seq(
+      $.custom_field,
+      optional(
+        repeat1(
+          seq(
+            ',',
+            $.custom_field,
+          ),
+        ),
+      ),
+    ),
+
+    custom_field: $ => seq(
+      $.identifier,
+      $.type,
+      optional(seq(
+        $.keyword_collate,
+        $.boolean,
+      )),
+    ),
+
     _enum_type: $ => seq(
       $.keyword_enum,
+      $.enum_values,
+    ),
+
+    enum_values: $ => seq(
+      '(',
+      optional(
+        $._enum_values,
+      ),
+      ')',
+    ),
+
+    _enum_values: $ => seq(
+      alias($.string, $.enum_value),
+      optional(
+        repeat1(
+          seq(
+            ',',
+            alias($.string, $.enum_value),
+          ),
+        ),
+      ),
+    ),
+
+    _range_type: $ => seq(
+      $.keyword_range,
+      $.range_values,
+    ),
+
+    range_values: $ => seq(
+      '(',
+      optional(
+        $._range_values,
+      ),
+      ')',
+    ),
+
+    _range_values: $ => seq(
+      $.range_value,
+      optional(
+        repeat1(
+          seq(
+            ',',
+            $.range_value,
+          ),
+        ),
+      ),
+    ),
+
+    range_value: $ => choice(
+      seq($.keyword_subtype, "=", $.type),
+      seq($.keyword_subtype_opclass, "=", $.identifier),
+      seq($.keyword_canonical, "=", $.identifier),
+      seq($.keyword_collation, "=", $.boolean),
+      seq($.keyword_subtype_diff, "=", $.identifier),
     ),
 
     _alter_statement: $ => seq(
@@ -1238,8 +1327,7 @@ module.exports = grammar({
           $.keyword_on,
           choice(
             $.predicate,
-            $.keyword_true,
-            $.keyword_false,
+            $.boolean,
           ),
         ),
         seq(
@@ -1277,8 +1365,7 @@ module.exports = grammar({
       $.keyword_on,
       choice(
         $.predicate,
-        $.keyword_true,
-        $.keyword_false,
+        $.boolean,
       ),
     ),
 
@@ -1381,8 +1468,7 @@ module.exports = grammar({
         choice(
           $.keyword_null,
           $._not_null,
-          $.keyword_true,
-          $.keyword_false,
+          $.boolean,
         ),
       ),
       // TODO exists/not exists (subquery)
@@ -1394,8 +1480,6 @@ module.exports = grammar({
       $.predicate,
       $.subquery,
       $.function_call,
-      $.keyword_true,
-      $.keyword_false,
       $.keyword_null,
       $.case,
     ),
@@ -1413,15 +1497,20 @@ module.exports = grammar({
       choice(
         $.number,
         $.string,
-        $.keyword_true,
-        $.keyword_false,
+        $.boolean,
         $.keyword_null,
       ),
+    ),
+    
+    boolean: $ => choice(
+      $._keyword_true,
+      $._keyword_false,
     ),
 
     string: $ => choice(
       $._single_quote_literal_string,
       $._double_quote_literal_string,
+      $._dollar_quote_literal_string,
     ),
 
     _single_quote_literal_string: $ => seq(
@@ -1442,6 +1531,15 @@ module.exports = grammar({
       '"'    
     ),
 
+    _dollar_quote_literal_string: $ => seq(
+      '$$',
+      repeat(choice(
+        alias($.unescaped_dollar_string_fragment, $.string_fragment),
+        $.escape_sequence
+      )),
+      '$$'    
+    ),
+
     // Workaround to https://github.com/tree-sitter/tree-sitter/issues/1156
     // We give names to the token() constructs containing a regexp
     // so as to obtain a node in the CST.
@@ -1451,6 +1549,8 @@ module.exports = grammar({
     // same here
     unescaped_single_string_fragment: $ =>
       token.immediate(prec(1, /[^'\\]+/)),
+    unescaped_dollar_string_fragment: $ =>
+      token.immediate(prec(1, /[^$$\\]+/)),
 
     escape_sequence: $ => token.immediate(seq(
       choice('\\', "''"),
@@ -1469,6 +1569,7 @@ module.exports = grammar({
       $._identifier,
       seq('`', $._identifier, '`'),
       seq('"', $._identifier, '"'),
+      seq('$', /\d+/),
     ),
     _identifier: _ => /([a-zA-Z_][0-9a-zA-Z_]*)/,
   }

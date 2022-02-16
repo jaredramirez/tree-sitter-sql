@@ -566,3 +566,91 @@ CREATE TABLE type_test (
     (column_definition name: (identifier) (type (builtin)))
     (column_definition name: (identifier) (type (builtin)))
    ))))
+
+==================
+Create custom type
+==================
+
+CREATE type test as (a text, b int collate true);
+
+---
+(program
+  (statement
+    (create_type
+      (keyword_create)
+      (keyword_type)
+      (identifier)
+      (keyword_as)
+      (custom_fields
+        (custom_field
+          (identifier)
+          (type
+            (builtin)))
+        (custom_field
+          (identifier)
+          (type
+            (builtin))
+          (keyword_collate)
+          (boolean))))))
+
+==================
+Create enum type
+==================
+
+CREATE type test as enum ('a', 'b');
+
+---
+
+(program
+  (statement
+    (create_type
+      (keyword_create)
+      (keyword_type)
+      (identifier)
+      (keyword_as)
+      (keyword_enum)
+      (enum_values
+        (enum_value
+          (string_fragment))
+        (enum_value
+          (string_fragment))))))
+
+==================
+Create range type
+==================
+
+CREATE type test as range
+( subtype = float8
+, subtype_diff = float8mi
+, subtype_opclass = float8mi
+, collation = true
+, canonical = test
+);
+
+---
+
+(program
+  (statement
+    (create_type
+      (keyword_create)
+      (keyword_type)
+      (identifier)
+      (keyword_as)
+      (keyword_range)
+      (range_values
+        (range_value
+          (keyword_subtype)
+          (type
+            (custom)))
+        (range_value
+          (keyword_subtype_diff)
+          (identifier))
+        (range_value
+          (keyword_subtype_opclass)
+          (identifier))
+        (range_value
+          (keyword_collation)
+          (boolean))
+        (range_value
+          (keyword_canonical)
+          (identifier))))))

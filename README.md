@@ -17,11 +17,11 @@ SQL grammar for [tree-sitter](https://github.com/tree-sitter/tree-sitter).
 - [x] INSERT/REPLACE statements
 - [x] DROP statements
 - [x] ALTER TABLE statements
+- [x] Function definitions
 - [ ] CREATE INDEX statements
 - [ ] DROP INDEX statements
 - [ ] ALTER INDEX statements
 - [ ] EXPLAIN statements
-- [ ] Function definitions
 
 For a complete list of features see the the [tests](test/corpus)
 

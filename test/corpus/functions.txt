@@ -161,8 +161,8 @@ CREATE FUNCTION test(X INT) RETURNS INT AS 'objfile', 'link_symbol';
       (function_attributes
         (function_definition
           (keyword_as)
-          (obj_file (string_fragment))
-          (link_symbol (string_fragment)))))))
+          (string (raw_function_definition (string_fragment)))
+          (string (string_fragment)))))))
 
 ==================
 Create sql function with $$ attributes (postgres)
@@ -208,7 +208,7 @@ $$
       (function_attributes
         (function_definition
           (keyword_as)
-          (raw_function_definition))
+          (string (raw_function_definition (string_fragment))))
         (function_language
           (keyword_language)
           (identifier))
@@ -300,7 +300,7 @@ $$ LANGUAGE SQL COMMENT 'c' NOT DETERMINISTIC READS SQL DATA SQL SECURITY DEFINE
       (function_attributes
         (function_definition
           (keyword_as)
-          (raw_function_definition))
+          (string (raw_function_definition (string_fragment))))
         (function_language
           (keyword_language)
           (identifier))

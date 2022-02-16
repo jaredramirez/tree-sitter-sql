@@ -68,7 +68,7 @@ SELECT 1 AS one,
     (number)
     (keyword_as)
     (identifier)
-    (keyword_true)
+    (boolean)
     (keyword_as)
     (identifier)
     (keyword_null)
@@ -843,7 +843,7 @@ JOIN my_other_table ON TRUE;
     (table_expression
      name: (identifier))
     (keyword_on)
-    (keyword_true))
+    (boolean))
    )))
 
 ==================
@@ -1071,7 +1071,7 @@ JOIN LATERAL unnest(a.arr) AS arr ON TRUE;
     (keyword_as)
     alias: (identifier)
     (keyword_on)
-    (keyword_true)))))
+    (boolean)))))
 
 ==================
 Lateral join subquery
@@ -1109,7 +1109,7 @@ CROSS JOIN LATERAL (SELECT 1) AS b ON TRUE;
     (keyword_as)
     alias: (identifier)
     (keyword_on)
-    (keyword_true)))))
+    (boolean)))))
 
 ==================
 Multiple joins
@@ -1598,7 +1598,7 @@ ORDER BY my_table.title, my_table.id;
      right:
      (predicate
       left: (field table_alias: (identifier) name: (identifier))
-      right: (keyword_true)))))
+      right: (boolean)))))
   (order_by
    (keyword_order_by)
    (order_expression
