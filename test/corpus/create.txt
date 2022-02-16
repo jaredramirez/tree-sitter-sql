@@ -568,7 +568,7 @@ CREATE TABLE type_test (
    ))))
 
 ==================
-Create custom type
+Create custom type (postgresql)
 ==================
 
 CREATE type test as (a text, b int collate true);
@@ -594,7 +594,7 @@ CREATE type test as (a text, b int collate true);
           (boolean))))))
 
 ==================
-Create enum type
+Create enum type (postgresql)
 ==================
 
 CREATE type test as enum ('a', 'b');
@@ -616,7 +616,7 @@ CREATE type test as enum ('a', 'b');
           (string_fragment))))))
 
 ==================
-Create range type
+Create range type (postgresql)
 ==================
 
 CREATE type test as range

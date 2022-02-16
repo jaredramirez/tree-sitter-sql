@@ -306,3 +306,117 @@ ALTER VIEW IF EXISTS my_view
     (keyword_to)
     (table_reference name: (identifier))
    ))))
+
+==================
+Alter type (postgresql)
+==================
+
+alter type custom1 owner to current_role;
+alter type custom1 rename to custom2;
+alter type custom2 set schema blah;
+alter type custom2 rename attribute a to b;
+alter type custom2 add value if not exists 'a';
+alter type custom2 add value if not exists 'b' after 'a';
+alter type custom2 rename value 'a' to 'z';
+alter type custom2 set ( recieve = test, send = none, storage = extended );
+
+---
+
+(program
+  (statement
+    (alter_type
+      (keyword_alter)
+      (keyword_type)
+      (type
+        (custom))
+      (keyword_owner)
+      (keyword_to)
+      (keyword_current_role)))
+  (statement
+    (alter_type
+      (keyword_alter)
+      (keyword_type)
+      (type
+        (custom))
+      (keyword_rename)
+      (keyword_to)
+      (type
+        (custom))))
+  (statement
+    (alter_type
+      (keyword_alter)
+      (keyword_type)
+      (type
+        (custom))
+      (keyword_set)
+      (keyword_schema)
+      (identifier)))
+  (statement
+    (alter_type
+      (keyword_alter)
+      (keyword_type)
+      (type
+        (custom))
+      (keyword_rename)
+      (keyword_attribute)
+      (identifier)
+      (keyword_to)
+      (identifier)))
+  (statement
+    (alter_type
+      (keyword_alter)
+      (keyword_type)
+      (type
+        (custom))
+      (keyword_add)
+      (keyword_value)
+      (keyword_if)
+      (keyword_not)
+      (keyword_exists)
+      (string
+        (string_fragment))))
+  (statement
+    (alter_type
+      (keyword_alter)
+      (keyword_type)
+      (type
+        (custom))
+      (keyword_add)
+      (keyword_value)
+      (keyword_if)
+      (keyword_not)
+      (keyword_exists)
+      (string
+        (string_fragment))
+      (keyword_after)
+      (string
+        (string_fragment))))
+  (statement
+    (alter_type
+      (keyword_alter)
+      (keyword_type)
+      (type
+        (custom))
+      (keyword_rename)
+      (keyword_value)
+      (string
+        (string_fragment))
+      (keyword_to)
+      (string
+        (string_fragment))))
+  (statement
+    (alter_type
+      (keyword_alter)
+      (keyword_type)
+      (type
+        (custom))
+      (keyword_set)
+      (alter_type_property
+        (keyword_recieve)
+        (identifier))
+      (alter_type_property
+        (keyword_send)
+        (keyword_none))
+      (alter_type_property
+        (keyword_storage)
+        (keyword_extended)))))

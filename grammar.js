@@ -100,12 +100,15 @@ module.exports = grammar({
     keyword_parallel: _ => make_keyword("parallel"),
     keyword_unsafe: _ => make_keyword("unsafe"),
     keyword_restricted: _ => make_keyword("restricted"),
+    keyword_restrict: _ => make_keyword("restrict"),
     keyword_safe: _ => make_keyword("safe"),
     keyword_cost: _ => make_keyword("cost"),
     keyword_rows: _ => make_keyword("rows"),
     keyword_support: _ => make_keyword("support"),
     keyword_set: _ => make_keyword("set"),
     keyword_current: _ => make_keyword("current"),
+    keyword_current_role: _ => make_keyword("current_role"),
+    keyword_current_user: _ => make_keyword("current_user"),
     keyword_sql: _ => make_keyword("sql"),
     keyword_no: _ => make_keyword("no"),
     keyword_reads: _ => make_keyword("reads"),
@@ -165,6 +168,21 @@ module.exports = grammar({
     keyword_subtype_diff: _ => make_keyword("subtype_diff"),
     keyword_collation: _ => make_keyword("collation"),
     keyword_canonical: _ => make_keyword("canonical"),
+    keyword_attribute: _ => make_keyword("attribute"),
+    keyword_value: _ => make_keyword("value"),
+    keyword_before: _ => make_keyword("before"),
+    keyword_after: _ => make_keyword("after"),
+    keyword_recieve: _ => make_keyword("recieve"),
+    keyword_send: _ => make_keyword("send"),
+    keyword_typmod_in: _ => make_keyword("typmod_in"),
+    keyword_typmod_out: _ => make_keyword("typmod_out"),
+    keyword_analyze: _ => make_keyword("analyze"),
+    keyword_subscript: _ => make_keyword("subscript"),
+    keyword_storage: _ => make_keyword("storage"),
+    keyword_none: _ => make_keyword("none"),
+    keyword_plain: _ => make_keyword("plain"),
+    keyword_extended: _ => make_keyword("extended"),
+    keyword_external: _ => make_keyword("external"),
 
     _temporary: $ => choice($.keyword_temp, $.keyword_temporary),
     _not_null: $ => seq($.keyword_not, $.keyword_null),
@@ -806,6 +824,7 @@ module.exports = grammar({
       choice(
         $.alter_table,
         $.alter_view,
+        $.alter_type,
       ),
     ),
 
@@ -913,6 +932,107 @@ module.exports = grammar({
         $.change_ownership,
       ),
     ),
+
+    alter_type: $ => seq(
+      $.keyword_alter,
+      $.keyword_type,
+      $.type,
+      choice(
+        // OWNER TO { new_owner | CURRENT_ROLE | CURRENT_USER | SESSION_USER }
+        seq(
+          $.keyword_owner,
+          $.keyword_to,
+          choice(
+            $.keyword_current_role,
+            $.keyword_current_user,
+            $.identifier,
+          ),
+        ),
+        // RENAME
+        seq(
+          $.keyword_rename,
+          choice(
+            // TO new_name
+            seq(
+              $.keyword_to,
+              $.type,
+            ),
+            // ATTRIBUTE attribute_name TO new_attribute_name [ CASCADE | RESTRICT ]
+            seq(
+              $.keyword_attribute,
+              $.identifier,
+              $.keyword_to,
+              $.identifier,
+              optional(choice(
+                $.keyword_cascade,
+                $.keyword_restrict,
+              )),
+            ),
+            // VALUE existing_enum_value TO new_enum_value
+            seq(
+              $.keyword_value,
+              $.string,
+              $.keyword_to,
+              $.string,
+            ),
+            // VALUE existing_enum_value TO new_enum_value
+            seq(
+              $.keyword_value,
+              $.string,
+              $.keyword_to,
+              $.string,
+            ),
+          ),
+        ),
+        // SET
+        seq(
+          $.keyword_set,
+          choice(
+            // SCHEMA new_schema
+            seq(
+              $.keyword_schema,
+              $.identifier,
+            ),
+            // ( property = value [, ... ] )
+            param_list($.alter_type_property)
+          ),
+        ),
+        // ADD VALUE [ IF NOT EXISTS ] new_enum_value [ { BEFORE | AFTER } neighbor_enum_value ]
+        seq(
+          $.keyword_add,
+          $.keyword_value,
+          optional(seq($.keyword_if, $.keyword_not, $.keyword_exists)),
+          $.string,
+          optional(seq(
+            choice($.keyword_before, $.keyword_after),
+            $.string
+          )),
+        ),
+      ),
+    ),
+
+    alter_type_property: $ => choice(
+      seq(
+        $.keyword_storage,
+        "=",
+        choice(
+          $.keyword_plain,
+          $.keyword_extended,
+          $.keyword_external,
+        ),
+      ),
+      seq(
+        choice(
+          $.keyword_recieve,
+          $.keyword_send,
+          $.keyword_typmod_in,
+          $.keyword_typmod_out,
+          $.keyword_subscript,
+        ),
+        "=",
+        choice($.keyword_none, $.identifier),
+      ), 
+    ), 
 
     _drop_statement: $ => seq(
       choice(
@@ -1532,12 +1652,12 @@ module.exports = grammar({
     ),
 
     _dollar_quote_literal_string: $ => seq(
-      '$$',
+      '$', optional(alias($._identifier, $.token)), '$',
       repeat(choice(
         alias($.unescaped_dollar_string_fragment, $.string_fragment),
         $.escape_sequence
       )),
-      '$$'    
+      '$', optional(alias($._identifier, $.token)), '$',
     ),
 
     // Workaround to https://github.com/tree-sitter/tree-sitter/issues/1156
@@ -1569,7 +1689,6 @@ module.exports = grammar({
       $._identifier,
       seq('`', $._identifier, '`'),
       seq('"', $._identifier, '"'),
-      seq('$', /\d+/),
     ),
     _identifier: _ => /([a-zA-Z_][0-9a-zA-Z_]*)/,
   }

@@ -214,6 +214,164 @@
     }
   },
   {
+    "type": "alter_type",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "alter_type_property",
+          "named": true
+        },
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "keyword_add",
+          "named": true
+        },
+        {
+          "type": "keyword_after",
+          "named": true
+        },
+        {
+          "type": "keyword_alter",
+          "named": true
+        },
+        {
+          "type": "keyword_attribute",
+          "named": true
+        },
+        {
+          "type": "keyword_before",
+          "named": true
+        },
+        {
+          "type": "keyword_cascade",
+          "named": true
+        },
+        {
+          "type": "keyword_current_role",
+          "named": true
+        },
+        {
+          "type": "keyword_current_user",
+          "named": true
+        },
+        {
+          "type": "keyword_exists",
+          "named": true
+        },
+        {
+          "type": "keyword_if",
+          "named": true
+        },
+        {
+          "type": "keyword_not",
+          "named": true
+        },
+        {
+          "type": "keyword_owner",
+          "named": true
+        },
+        {
+          "type": "keyword_rename",
+          "named": true
+        },
+        {
+          "type": "keyword_restrict",
+          "named": true
+        },
+        {
+          "type": "keyword_schema",
+          "named": true
+        },
+        {
+          "type": "keyword_set",
+          "named": true
+        },
+        {
+          "type": "keyword_to",
+          "named": true
+        },
+        {
+          "type": "keyword_type",
+          "named": true
+        },
+        {
+          "type": "keyword_value",
+          "named": true
+        },
+        {
+          "type": "string",
+          "named": true
+        },
+        {
+          "type": "type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "alter_type_property",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "keyword_extended",
+          "named": true
+        },
+        {
+          "type": "keyword_external",
+          "named": true
+        },
+        {
+          "type": "keyword_none",
+          "named": true
+        },
+        {
+          "type": "keyword_plain",
+          "named": true
+        },
+        {
+          "type": "keyword_recieve",
+          "named": true
+        },
+        {
+          "type": "keyword_send",
+          "named": true
+        },
+        {
+          "type": "keyword_storage",
+          "named": true
+        },
+        {
+          "type": "keyword_subscript",
+          "named": true
+        },
+        {
+          "type": "keyword_typmod_in",
+          "named": true
+        },
+        {
+          "type": "keyword_typmod_out",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "alter_view",
     "named": true,
     "fields": {},
@@ -1101,6 +1259,10 @@
         },
         {
           "type": "string_fragment",
+          "named": true
+        },
+        {
+          "type": "token",
           "named": true
         }
       ]
@@ -2383,11 +2545,6 @@
     }
   },
   {
-    "type": "number",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "offset",
     "named": true,
     "fields": {},
@@ -2814,6 +2971,10 @@
         {
           "type": "string_fragment",
           "named": true
+        },
+        {
+          "type": "token",
+          "named": true
         }
       ]
     }
@@ -3087,6 +3248,10 @@
           "named": true
         },
         {
+          "type": "alter_type",
+          "named": true
+        },
+        {
           "type": "alter_view",
           "named": true
         },
@@ -3179,6 +3344,10 @@
         },
         {
           "type": "string_fragment",
+          "named": true
+        },
+        {
+          "type": "token",
           "named": true
         }
       ]
@@ -3468,10 +3637,6 @@
     "named": false
   },
   {
-    "type": "$$",
-    "named": false
-  },
-  {
     "type": "%",
     "named": false
   },
@@ -3560,6 +3725,10 @@
     "named": true
   },
   {
+    "type": "keyword_after",
+    "named": true
+  },
+  {
     "type": "keyword_all",
     "named": true
   },
@@ -3580,7 +3749,15 @@
     "named": true
   },
   {
+    "type": "keyword_attribute",
+    "named": true
+  },
+  {
     "type": "keyword_auto_increment",
+    "named": true
+  },
+  {
+    "type": "keyword_before",
     "named": true
   },
   {
@@ -3644,6 +3821,14 @@
     "named": true
   },
   {
+    "type": "keyword_current_role",
+    "named": true
+  },
+  {
+    "type": "keyword_current_user",
+    "named": true
+  },
+  {
     "type": "keyword_data",
     "named": true
   },
@@ -3693,6 +3878,10 @@
   },
   {
     "type": "keyword_exists",
+    "named": true
+  },
+  {
+    "type": "keyword_extended",
     "named": true
   },
   {
@@ -3808,6 +3997,10 @@
     "named": true
   },
   {
+    "type": "keyword_none",
+    "named": true
+  },
+  {
     "type": "keyword_not",
     "named": true
   },
@@ -3844,6 +4037,10 @@
     "named": true
   },
   {
+    "type": "keyword_plain",
+    "named": true
+  },
+  {
     "type": "keyword_primary",
     "named": true
   },
@@ -3856,11 +4053,19 @@
     "named": true
   },
   {
+    "type": "keyword_recieve",
+    "named": true
+  },
+  {
     "type": "keyword_rename",
     "named": true
   },
   {
     "type": "keyword_replace",
+    "named": true
+  },
+  {
+    "type": "keyword_restrict",
     "named": true
   },
   {
@@ -3904,6 +4109,10 @@
     "named": true
   },
   {
+    "type": "keyword_send",
+    "named": true
+  },
+  {
     "type": "keyword_set",
     "named": true
   },
@@ -3916,7 +4125,15 @@
     "named": true
   },
   {
+    "type": "keyword_storage",
+    "named": true
+  },
+  {
     "type": "keyword_strict",
+    "named": true
+  },
+  {
+    "type": "keyword_subscript",
     "named": true
   },
   {
@@ -3964,6 +4181,14 @@
     "named": true
   },
   {
+    "type": "keyword_typmod_in",
+    "named": true
+  },
+  {
+    "type": "keyword_typmod_out",
+    "named": true
+  },
+  {
     "type": "keyword_union",
     "named": true
   },
@@ -3981,6 +4206,10 @@
   },
   {
     "type": "keyword_using",
+    "named": true
+  },
+  {
+    "type": "keyword_value",
     "named": true
   },
   {
@@ -4012,7 +4241,15 @@
     "named": true
   },
   {
+    "type": "number",
+    "named": true
+  },
+  {
     "type": "string_fragment",
+    "named": true
+  },
+  {
+    "type": "token",
     "named": true
   }
 ]
