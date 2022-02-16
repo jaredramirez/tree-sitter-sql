@@ -1275,11 +1275,54 @@
           "named": true
         },
         {
+          "type": "keyword_restrict",
+          "named": true
+        },
+        {
           "type": "keyword_table",
           "named": true
         },
         {
           "type": "table_reference",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "drop_type",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "keyword_cascade",
+          "named": true
+        },
+        {
+          "type": "keyword_drop",
+          "named": true
+        },
+        {
+          "type": "keyword_exists",
+          "named": true
+        },
+        {
+          "type": "keyword_if",
+          "named": true
+        },
+        {
+          "type": "keyword_restrict",
+          "named": true
+        },
+        {
+          "type": "keyword_type",
+          "named": true
+        },
+        {
+          "type": "type",
           "named": true
         }
       ]
@@ -1307,6 +1350,10 @@
         },
         {
           "type": "keyword_if",
+          "named": true
+        },
+        {
+          "type": "keyword_restrict",
           "named": true
         },
         {
@@ -3356,6 +3403,10 @@
         },
         {
           "type": "drop_table",
+          "named": true
+        },
+        {
+          "type": "drop_type",
           "named": true
         },
         {

@@ -1073,6 +1073,7 @@ module.exports = grammar({
       choice(
         $.drop_table,
         $.drop_view,
+        $.drop_type,
       ),
     ),
 
@@ -1081,9 +1082,7 @@ module.exports = grammar({
       $.keyword_table,
       optional($._if_exists),
       $.table_reference,
-      optional(
-        $.keyword_cascade,
-      ),
+      optional($._cascade_restrict),
     ),
 
     drop_view: $ => seq(
@@ -1091,9 +1090,16 @@ module.exports = grammar({
       $.keyword_view,
       optional($._if_exists),
       $.table_reference,
-      optional(
-        $.keyword_cascade,
-      ),
+      optional($._cascade_restrict),
+    ),
+
+    drop_type: $ => seq(
+      $.keyword_drop,
+      $.keyword_type,
+      optional($._if_exists),
+      $.type,
+      optional(repeat(seq(",", $.type))),
+      optional($._cascade_restrict),
     ),
 
     rename_object: $ => seq(

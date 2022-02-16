@@ -4286,6 +4286,10 @@
             {
               "type": "SYMBOL",
               "name": "drop_view"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "drop_type"
             }
           ]
         }
@@ -4323,7 +4327,7 @@
           "members": [
             {
               "type": "SYMBOL",
-              "name": "keyword_cascade"
+              "name": "_cascade_restrict"
             },
             {
               "type": "BLANK"
@@ -4364,7 +4368,72 @@
           "members": [
             {
               "type": "SYMBOL",
-              "name": "keyword_cascade"
+              "name": "_cascade_restrict"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        }
+      ]
+    },
+    "drop_type": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "keyword_drop"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "keyword_type"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_if_exists"
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "type"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "REPEAT",
+              "content": {
+                "type": "SEQ",
+                "members": [
+                  {
+                    "type": "STRING",
+                    "value": ","
+                  },
+                  {
+                    "type": "SYMBOL",
+                    "name": "type"
+                  }
+                ]
+              }
+            },
+            {
+              "type": "BLANK"
+            }
+          ]
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "_cascade_restrict"
             },
             {
               "type": "BLANK"
