@@ -308,7 +308,50 @@ ALTER VIEW IF EXISTS my_view
    ))))
 
 ==================
-Alter type (postgresql)
+Alter type lots o forms (postgresql)
+==================
+
+alter type test
+    add attribute a boolean restrict,
+    drop attribute if exists b cascade,
+    alter attribute c set data type int collate true;
+
+---
+
+(program
+  (statement
+    (alter_type
+      (keyword_alter)
+      (keyword_type)
+      (type
+        (custom))
+      (alter_type_action
+        (keyword_add)
+        (keyword_attribute)
+        (identifier)
+        (type
+          (builtin))
+        (keyword_restrict))
+      (alter_type_action
+        (keyword_drop)
+        (keyword_attribute)
+        (keyword_if)
+        (keyword_exists)
+        (identifier)
+        (keyword_cascade))
+      (alter_type_action
+        (keyword_alter)
+        (keyword_attribute)
+        (ERROR)
+        (keyword_set)
+        (keyword_data)
+        (keyword_type)
+        (identifier)
+        (keyword_collate)
+        (boolean)))))
+
+==================
+Alter type lots o forms (postgresql)
 ==================
 
 alter type custom1 owner to current_role;

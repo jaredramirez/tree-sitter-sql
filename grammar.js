@@ -105,7 +105,6 @@ module.exports = grammar({
     keyword_cost: _ => make_keyword("cost"),
     keyword_rows: _ => make_keyword("rows"),
     keyword_support: _ => make_keyword("support"),
-    keyword_set: _ => make_keyword("set"),
     keyword_current: _ => make_keyword("current"),
     keyword_current_role: _ => make_keyword("current_role"),
     keyword_current_user: _ => make_keyword("current_user"),
@@ -148,7 +147,6 @@ module.exports = grammar({
     keyword_cascade: _ => make_keyword("cascade"),
     keyword_with: _ => make_keyword("with"),
     keyword_no: _ => make_keyword("no"),
-    keyword_data: _ => make_keyword("data"),
     keyword_rename: _ => make_keyword("rename"),
     keyword_to: _ => make_keyword("to"),
     keyword_schema: _ => make_keyword("schema"),
@@ -192,6 +190,8 @@ module.exports = grammar({
     _if_not_exists: $ => seq($.keyword_if, $.keyword_not, $.keyword_exists),
     _or_replace: $ => seq($.keyword_or, $.keyword_replace),
     _default_null: $ => seq($.keyword_default, $.keyword_null),
+    _cascade_restrict: $ => choice($.keyword_cascade, $.keyword_restrict),
+    _set_data: $ => seq($.keyword_set, $.keyword_data),
     direction: $ => choice($.keyword_desc, $.keyword_asc),
 
     // Types
@@ -881,12 +881,7 @@ module.exports = grammar({
           $.keyword_null,
         ),
         seq(
-          optional(
-            seq(
-              $.keyword_set,
-              $.keyword_data,
-            ),
-          ),
+          optional($._set_data),
           $.keyword_type,
           $.type,
         ),
@@ -963,10 +958,7 @@ module.exports = grammar({
               $.identifier,
               $.keyword_to,
               $.identifier,
-              optional(choice(
-                $.keyword_cascade,
-                $.keyword_restrict,
-              )),
+              optional($._cascade_restrict),
             ),
             // VALUE existing_enum_value TO new_enum_value
             seq(
@@ -1001,13 +993,15 @@ module.exports = grammar({
         seq(
           $.keyword_add,
           $.keyword_value,
-          optional(seq($.keyword_if, $.keyword_not, $.keyword_exists)),
+          optional($._if_not_exists),
           $.string,
           optional(seq(
             choice($.keyword_before, $.keyword_after),
             $.string
           )),
         ),
+        // action, [ ... ]
+        $._alter_type_actions
       ),
     ),
 
@@ -1033,6 +1027,47 @@ module.exports = grammar({
         choice($.keyword_none, $.identifier),
       ), 
     ), 
+
+    _alter_type_actions: $ => seq(
+      $.alter_type_action,
+      repeat(seq(",", $.alter_type_action))
+    ),
+
+    alter_type_action: $ => choice(
+      // ADD ATTRIBUTE attribute_name data_type [ COLLATE collation ] [ CASCADE | RESTRICT ]
+      seq(
+        $.keyword_add,
+        $.keyword_attribute,
+        $.identifier,
+        $.type,
+        optional(seq(
+          $.keyword_collate,
+          $.boolean,
+        )),
+        optional($._cascade_restrict),
+      ),
+      // DROP ATTRIBUTE [ IF EXISTS ] attribute_name [ CASCADE | RESTRICT ]
+      seq(
+        $.keyword_drop,
+        $.keyword_attribute,
+        optional($._if_exists),
+        $.identifier,
+        optional($._cascade_restrict),
+      ),
+      // ALTER ATTRIBUTE attribute_name [ SET DATA ] TYPE data_type [ COLLATE collation ] [ CASCADE | RESTRICT ]
+      seq(
+        $.keyword_alter,
+        $.keyword_attribute,
+        optional($._set_data),
+        $.keyword_type,
+        $.identifier,
+        optional(seq(
+          $.keyword_collate,
+          $.boolean,
+        )),
+        optional($._cascade_restrict),
+      ),
+    ),
 
     _drop_statement: $ => seq(
       choice(
